@@ -1,8 +1,3 @@
-// CarFilter.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include <iostream>
-#include <string>
 /*
 * Three pieces of info required:
 * make String - make of a car
@@ -16,15 +11,46 @@
 * 2,3 - last to digits of a year
 * 4,5 - number of cylinders
 */
-using namespace std;
-string airFilterGenerator(string make, int year, int cylinders) {
-    string yearString = to_string(year);
-    string cylindersString = to_string(cylinders);
 
+#include <cctype>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+/* 
+*  @brief Generate a string containing filter model number.
+*
+*  Output consists of 5 characters, where first char is an uppercase first letter of make.
+*  The second and third characters represent last two digits of the year of manufacture.
+*  The fourth and fifth characters are for the number of cylinders, zero-padded if number is one digit long.
+*
+* @param make Make of the car.
+* @param year Year of the car's manufacture.
+* @param cylinders The numbers of cylinders in the engine.
+*
+* @return The air filter model number as 5 character long string.
+*/
+string airFilterGenerator(string make, int year, int cylinders) {
+
+  // Extract Uppercase first char of make.
+  char make_first = toupper(make[0]);
+  // Convert to string and extract last 
+  string y_string = to_string(year).substr(2,2);
+  string c_string = to_string(cylinders);
+
+
+  if(c_string.length() == 1) {
+      c_string = '0' + c_string;
+  }
+
+  return make_first + y_string + c_string;
+  
 }
 
 int main()
 {
-    std::cout << "Hello World!\n";
+  string filter = airFilterGenerator("Honda", 2015, 8);
+  std::cout << filter << '\n';
 }
 

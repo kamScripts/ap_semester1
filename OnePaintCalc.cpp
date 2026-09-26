@@ -46,6 +46,7 @@ int main()
   float s;
   int nc;
   int nd;
+  
   cout << "Welcome to the painter calculator..." << endl;
   cout << "Please enter the surface are to be painted: " << endl;
   cin >> s;
