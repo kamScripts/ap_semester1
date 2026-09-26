@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <ctime>
@@ -30,21 +31,21 @@ int randomInt(int min, int max) {
 int* generateOperands(char difficulty) {
   //  Returns pointer to dynamically allocated array, allocated memory need to be deleted after processing.
   
-  
+  std::cout << "Difficulty level: " << difficulty << std::endl;
   int* arr = new int[2]; // pointer to empty array of size 2.
   int min, max;
 
   //Decide operands range on difficulty provided
   switch (difficulty) {
-    case 1:
+    case '1':
       min = 1;
       max = 10;
       break;
-    case 2:
+    case '2':
       min = 10;
       max = 99;     
       break;
-    case 3:
+    case '3':
       min = 100;
       max = 9999;
       break;
@@ -141,6 +142,7 @@ void testFuncs() {
   std::cout<<"Difficulty: Easy\tOperand range: 1-9\n";
 
   problem = generateOperands(2);
+
   op  = randomOperator();
 
   std::cout << problem[0] << ' ' << op << ' ' << problem[1] << '\n';
@@ -186,8 +188,62 @@ void testFuncs() {
 }
 int main() {
   srand(time(0));
-  testFuncs();
-  //char c = displayMenu();
-  //std::cout << c << std::endl;
+  //testFuncs();
+  bool isPlaying = true;
+
+  while (isPlaying) {
+
+    int* problem;
+    int counter, trials, temp;
+    std::string user_trials_input;
+    char diff_level, op;
+    int user_correct = 0;
+    int user_wrong = 0;
+
+
+    std::cout << "=== Welcome in mathematical quiz, check your knowledge in maths! ===\n";
+    
+    diff_level = displayMenu();
+    
+
+    std::cout << "How many problems would like to solve ?" << std::endl;
+    getline(std::cin, user_trials_input);
+
+    temp = std::stoi(user_trials_input);
+    counter = temp;
+    trials = temp;
+
+    while (counter>0) {
+
+    problem = generateOperands(diff_level);
+    std::cout << problem[0] << '\t' << problem[1] << "\tPROBLEMS" << std::endl;
+    op = randomOperator();
+    int correctAnswer;    
+    int answer = displayProblem(problem[0], problem[1], op);
+    
+
+    if (op == '+') {
+      correctAnswer = problem[0] + problem[1];
+    } else {
+      correctAnswer = problem[0] - problem[1];
+    }
+    std::cout << "user answer: " << answer << std::endl;
+    bool userAnswer = isCorrect(problem[0], problem[1], op, answer);
+    if (userAnswer) {
+      displayMessage(userAnswer);
+      user_correct++;
+    } else {
+      displayMessage(userAnswer);
+      user_wrong++;
+    }    
+    delete[] problem;
+    counter--;
+  }
+  
+  displayFinalResults(user_correct, user_wrong, trials);
+
+  isPlaying = false;
+  }
+  
   return 0;
 }
