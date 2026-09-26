@@ -26,15 +26,16 @@ using namespace std;
 * (int) 
 */
 int calcPaint(int nc, float s, int nd ) {
-  
+  // W - 1.2, the expected for any job
   const float W = 1.2f;
+  // P - 0.004, the international Painter's constant
   const float P = 0.004f;
-  float result = ((P * nc * s) + W) * (1 + (1 / nd));
+  float result = ((P * nc * s) + W) * (1.0f + (1.0f / nd));
   // Handle edge case when result is an integer and increment or if not round the result up
   if (result == (int) result) {
-    result += 1;
+    result += 1.0f;
   } else {
-    ceil(result);
+    result = ceil(result);
   }    
 
   return (int) result;
@@ -53,9 +54,10 @@ int main()
   cout << "Please enter the expectedd number of days to complete the job: ";
   cin >> nd;
   cout << "Number of gallons of paint to purchase: " << calcPaint(nc, s, nd) << endl;
-  cout << "Surface are to paint: " << s << endl;
+  cout << "Surface to paint: " << s << endl;
+  cout << "Expected days to complete: " << nd << endl;
   cout << "Children in a vicinity: " << nc << endl;
-  
+
     
 }
 
