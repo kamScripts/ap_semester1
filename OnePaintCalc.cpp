@@ -46,7 +46,7 @@ int main()
   float s;
   int nc;
   int nd;
-  
+
   cout << "Welcome to the painter calculator..." << endl;
   cout << "Please enter the surface are to be painted: " << endl;
   cin >> s;
@@ -59,6 +59,6 @@ int main()
   cout << "Expected days to complete: " << nd << endl;
   cout << "Children in a vicinity: " << nc << endl;
 
-    
+  return 0;
 }
 
