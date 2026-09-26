@@ -48,12 +48,19 @@ string airFilterGenerator(string make, string year, string cylinders) {
   return make_first + y_string + c_string;
   
 }
-void cliApp() {
+/*
+*  @brief command line interface for airFilterGenerator
+*
+*  Displays available options, handle user input and output result of airFilerGenerator.
+*  Prompts used when function is called are stored in map prompts with descriptive names as keys.
+*  
+*/
+void cliApp(void) {
 
   string userInput;
   // make, year, cylinders for storing user input.
   string m, y, c;
-
+  // prompts map
   map<string,string> prompts {
     {"welcome","====== Welcome in Car Filter finder =======\nPlease select one of the following options:"},
     {"menu opts","1.  Find Car Filter.\n2.  Quit."},
@@ -71,7 +78,6 @@ void cliApp() {
   
   switch (userInput[0]) {
     case '1':
-
       cout << prompts["q make"] << endl;
       getline(cin,m);
       cout << prompts["q cylinders"] << m << endl;
@@ -81,14 +87,14 @@ void cliApp() {
       cout << prompts["res"] << airFilterGenerator(m, y, c) << endl;
       break;
     case '2':
-      cout << prompts["quitting"];
+      cout << prompts["quitting"] << endl;
       break;
     default:
-      cout << prompts["input error"];
-      cout << prompts["quitting"];
+      cout << prompts["input error"] << endl;
+      cout << prompts["quitting"] <<endl;
   }
   
-  cout << prompts["goodbye"];
+  cout << prompts["goodbye"] << endl;
 }
 
 int main()
