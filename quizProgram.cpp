@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <ctime>
@@ -29,10 +28,10 @@ int randomInt(int min, int max) {
 }
 
 int* generateOperands(char difficulty) {
-  //Return reference to dynamically allocated array, allocated memory need to be deleted after processing.
-  // op1, op2, operator
+  //  Returns pointer to dynamically allocated array, allocated memory need to be deleted after processing.
   
-  int* arr = new int[2];
+  
+  int* arr = new int[2]; // pointer to empty array of size 2.
   int min, max;
 
   //Decide operands range on difficulty provided
@@ -79,15 +78,30 @@ int displayProblem(int operand1, int operand2, char sign) {
 }
 
 bool isCorrect(int op1, int op2, char sign, int answer) {
-  
-  return false;
+
+  if (sign == '+') {
+    return op1 + op2 == answer;
+  }
+
+  return op1 - op2 == answer;
+
+
 }
 
 void displayMessage(bool isCorrect) {
-
+  
+  if (isCorrect) {
+      std::cout << "correct" << std::endl;
+    } else {
+      std::cout << "incorrect" << std::endl;
+    }
 }
 
-void displayFinalResults(int correctAnswers, int wrongAnswers) {
+void displayFinalResults(int correctAnswers, int wrongAnswers, double attempts) {
+  int percentage = (int)((double)correctAnswers / attempts * 100);
+  
+  std::cout << "you answered in correctly in " << percentage << "%\n";
+  std::cout << "Correct answers:\t" << correctAnswers << '\n' << "Incorrect answers:\t" << wrongAnswers << std::endl;
 
 }
 void testFuncs() {
@@ -134,18 +148,41 @@ void testFuncs() {
 
   std::cout << "*** end of test ***" << std::endl;
 
-  std::cout << "=== Display Problem test ===\n" ;
+  std::cout << "=== Display Problem + isCorrect test ===\n" ;
 
   int user_input;
-  int counter = 5;
+  int trials = 10;
+  int counter = 10;
+  int user_correct = 0;
+  int user_wrong = 0;
+
   while (counter>0) {
     problem = generateOperands(randomInt(1, 3));
     op = randomOperator();
+    int correctAnswer;    
     int answer = displayProblem(problem[0], problem[1], op);
+    
+
+    if (op == '+') {
+      correctAnswer = problem[0] + problem[1];
+    } else {
+      correctAnswer = problem[0] - problem[1];
+    }
     std::cout << "user answer: " << answer << std::endl;
+    bool userAnswer = isCorrect(problem[0], problem[1], op, answer);
+    if (userAnswer) {
+      displayMessage(userAnswer);
+      user_correct++;
+    } else {
+      displayMessage(userAnswer);
+      user_wrong++;
+    }    
     delete[] problem;
     counter--;
   }
+  
+  displayFinalResults(user_correct, user_wrong, trials);
+
 }
 int main() {
   srand(time(0));
