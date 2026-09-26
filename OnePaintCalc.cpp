@@ -26,26 +26,36 @@ using namespace std;
 * (int) 
 */
 int calcPaint(int nc, float s, int nd ) {
-    const float W = 1.2f;
-    const float P = 0.004f;
-    float result = ceil(((P * nc * s) + W) * (1 + (1 / nd)));    
+  
+  const float W = 1.2f;
+  const float P = 0.004f;
+  float result = ((P * nc * s) + W) * (1 + (1 / nd));
+  // Handle edge case when result is an integer and increment or if not round the result up
+  if (result == (int) result) {
+    result += 1;
+  } else {
+    ceil(result);
+  }    
 
-    return static_cast<int>(result);
+  return (int) result;
 }
 
 int main()
 {
-    float s;
-    int nc;
-    int nd;
-    cout << "Welcome to the painter calculator..." << endl;
-    cout << "Please enter the surface are to be painted: " << endl;
-    cin >> s;
-    cout << "Please enter the number of children in vicinity of the structure to be painted: " << endl;
-    cin >> nc;
-    cout << "Please enter the expectedd number of days to complete the job: ";
-    cin >> nd;
-    cout << "Number of gallons of paint to purchase: " << calcPaint(nc, s, nd) << endl;
+  float s;
+  int nc;
+  int nd;
+  cout << "Welcome to the painter calculator..." << endl;
+  cout << "Please enter the surface are to be painted: " << endl;
+  cin >> s;
+  cout << "Please enter the number of children in vicinity of the structure to be painted: " << endl;
+  cin >> nc;
+  cout << "Please enter the expectedd number of days to complete the job: ";
+  cin >> nd;
+  cout << "Number of gallons of paint to purchase: " << calcPaint(nc, s, nd) << endl;
+  cout << "Surface are to paint: " << s << endl;
+  cout << "Children in a vicinity: " << nc << endl;
+  
     
 }
 
