@@ -11,8 +11,9 @@ char displayMenu() {
   std::string user_input;
   //sizeof() returns size of a type in bytes. To find length Size of array need to be divided by its first element
   //for example (4bytes x 5 elements = 20bytes) -> (20 bytes / sizeof(int = 4 bytes) = 5 elements)/
-  int length = sizeof(difficulty_levels) / sizeof(difficulty_levels[0]);
 
+  int length = sizeof(difficulty_levels) / sizeof(difficulty_levels[0]);
+  
   std::cout << greeting << '\n';
 
   for (int i = 0; i < length; i++) {
@@ -35,7 +36,7 @@ int* generateOperands(char difficulty) {
   int* arr = new int[2]; // pointer to empty array of size 2.
   int min, max;
 
-  //Decide operands range on difficulty provided
+  //Decide operands range based on difficulty provided
   switch (difficulty) {
     case '1':
       min = 1;
@@ -68,6 +69,9 @@ char randomOperator() {
 }
 
 int displayProblem(int operand1, int operand2, char sign) {
+  /* @brief display equation and return user input
+  
+  */
 
   std::string user_input;
 
@@ -88,10 +92,19 @@ bool isCorrect(int op1, int op2, char sign, int answer) {
 
 void displayMessage(bool isCorrect) {
   
+  srand((int)time(0));
+  //answers arrays
+  std::string goodAnswers[4] = {"You are right!", "superb!", "bravo!", "correct!"};
+  std::string badAnswers[4] = {"Incorrect", "that's not right", "wrong answer, keep going!", "XXX wrong XXX answer XXX"};
+  
+  int index = rand() % 4;
+  
   if (isCorrect) {
-      std::cout << "correct" << std::endl;
+      std::cout << goodAnswers[index] << std::endl;
+      //std::cout << index << std::endl;
     } else {
-      std::cout << "incorrect" << std::endl;
+      std::cout << badAnswers[index] << std::endl;
+      //std::cout << index << std::endl;
     }
 }
 
@@ -99,7 +112,7 @@ void displayFinalResults(int correctAnswers, int wrongAnswers, double attempts) 
   
   int percentage = (int)((double)correctAnswers / attempts * 100);
 
-  std::cout << "you answered in correctly in " << percentage << "%\n";
+  std::cout << "you answered correctly in " << percentage << "%\n";
   std::cout << "Correct answers:\t" << correctAnswers << '\n' << "Incorrect answers:\t" << wrongAnswers << std::endl;
 
 }
@@ -211,22 +224,23 @@ int main() {
     trials = temp;
 
     while (counter>0) {
-
+    //random operands
     problem = generateOperands(diff_level);
-
+    // random equation sign
     op = randomOperator();
     int correctAnswer;    
     int answer = displayProblem(problem[0], problem[1], op);
-    
 
     if (op == '+') {
       correctAnswer = problem[0] + problem[1];
     } else {
       correctAnswer = problem[0] - problem[1];
     }
+
     // check if user is correct
     bool userAnswer = isCorrect(problem[0], problem[1], op, answer);
 
+    // handle user response
     if (userAnswer) {
       displayMessage(userAnswer);
       user_correct++;
@@ -235,6 +249,7 @@ int main() {
       // give user one more attempt
       std::cout << "try one more time!" << std::endl;
       answer = displayProblem(problem[0], problem[1], op);
+
       if (userAnswer) {
       displayMessage(userAnswer);
       user_correct++;
