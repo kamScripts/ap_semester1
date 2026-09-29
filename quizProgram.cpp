@@ -31,7 +31,7 @@ int randomInt(int min, int max) {
 int* generateOperands(char difficulty) {
   //  Returns pointer to dynamically allocated array, allocated memory need to be deleted after processing.
   
-  std::cout << "Difficulty level: " << difficulty << std::endl;
+
   int* arr = new int[2]; // pointer to empty array of size 2.
   int min, max;
 
@@ -83,10 +83,7 @@ bool isCorrect(int op1, int op2, char sign, int answer) {
   if (sign == '+') {
     return op1 + op2 == answer;
   }
-
   return op1 - op2 == answer;
-
-
 }
 
 void displayMessage(bool isCorrect) {
@@ -99,8 +96,9 @@ void displayMessage(bool isCorrect) {
 }
 
 void displayFinalResults(int correctAnswers, int wrongAnswers, double attempts) {
-  int percentage = (int)((double)correctAnswers / attempts * 100);
   
+  int percentage = (int)((double)correctAnswers / attempts * 100);
+
   std::cout << "you answered in correctly in " << percentage << "%\n";
   std::cout << "Correct answers:\t" << correctAnswers << '\n' << "Incorrect answers:\t" << wrongAnswers << std::endl;
 
@@ -187,7 +185,7 @@ void testFuncs() {
 
 }
 int main() {
-  srand(time(0));
+  srand((int)time(0));
   //testFuncs();
   bool isPlaying = true;
 
@@ -200,13 +198,12 @@ int main() {
     int user_correct = 0;
     int user_wrong = 0;
 
-
     std::cout << "=== Welcome in mathematical quiz, check your knowledge in maths! ===\n";
-    
+
     diff_level = displayMenu();
     
 
-    std::cout << "How many problems would like to solve ?" << std::endl;
+    std::cout << "How many problems would you like to solve ?" << std::endl;
     getline(std::cin, user_trials_input);
 
     temp = std::stoi(user_trials_input);
@@ -216,7 +213,7 @@ int main() {
     while (counter>0) {
 
     problem = generateOperands(diff_level);
-    std::cout << problem[0] << '\t' << problem[1] << "\tPROBLEMS" << std::endl;
+
     op = randomOperator();
     int correctAnswer;    
     int answer = displayProblem(problem[0], problem[1], op);
@@ -227,16 +224,29 @@ int main() {
     } else {
       correctAnswer = problem[0] - problem[1];
     }
-    std::cout << "user answer: " << answer << std::endl;
+    // check if user is correct
     bool userAnswer = isCorrect(problem[0], problem[1], op, answer);
+
     if (userAnswer) {
       displayMessage(userAnswer);
       user_correct++;
     } else {
       displayMessage(userAnswer);
+      // give user one more attempt
+      std::cout << "try one more time!" << std::endl;
+      answer = displayProblem(problem[0], problem[1], op);
+      if (userAnswer) {
+      displayMessage(userAnswer);
+      user_correct++;
+    } else {
+      displayMessage(userAnswer);
+      // after second attempt wrongAnswers++
+      std::cout << "correct answer is " << correctAnswer << std::endl;
       user_wrong++;
     }    
-    delete[] problem;
+
+    }    
+    delete[] problem; // delete dynamically allocated array.
     counter--;
   }
   
